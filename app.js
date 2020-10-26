@@ -18,7 +18,15 @@ const db = mysql.createConnection({
 const publicDirectory = path.join(__dirname,'./public_style');
 app.use(express.static(publicDirectory));
 
-app.set('view engine', 'hbs'); //will find folder 'views' by hbs default
+//Parse URL-encoded bodies (as sent bt HTML forms)
+//Make sure that can grab data from any form
+app.use(express.urlencoded({ extended: false}));
+//Parse JSON bodies (as sent by API clients)
+//Make sure values that come in are JSON 
+app.use(express.json());
+
+
+app.set('view engine', 'hbs'); //Find folder 'views' by hbs default
 
 db.connect( (err) => {
     if(err){
@@ -28,13 +36,9 @@ db.connect( (err) => {
     }
 });
 
-app.get("/", (req,res) =>{
-    res.render("index")
-});
-
-app.get("/register", (req,res) =>{
-    res.render("register")
-});
+//Define routes
+app.use('/', require('./routes/pages'));
+app.use('/auth', require('./routes/auth'));
 
 const port = process.env.PORT || 3500;
 app.listen(port, () => {
