@@ -13,7 +13,7 @@ const db = mysql.createConnection({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
-    port: '3306' 
+    port: process.env.DATABASE_PORT 
 });
 
 const publicDirectory = path.join(__dirname,'./public_style');
@@ -43,7 +43,7 @@ db.connect( (err) => {
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 
-const port = process.env.PORT || 3500;
-app.listen(port, () => {
-    console.log("Server started on port " + port);
+const serverPort = process.env.PORT || 3500;
+app.listen(serverPort, () => {
+    console.log("Server started on port " + serverPort);
 })

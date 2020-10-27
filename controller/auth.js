@@ -7,7 +7,7 @@ const db = mysql.createConnection({
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
-    port: '3306' 
+    port: process.env.DATABASE_PORT
 });
 
 exports.login = async(req, res) => {
@@ -43,7 +43,7 @@ exports.login = async(req, res) => {
                 }
 
                 res.cookie('Sunmi Cookie', token, cookieOption);
-                res.status(200).redirect("/");
+                res.status(200).redirect("/homePage");
             }
         });
     } catch (error) {
@@ -72,7 +72,12 @@ exports.register = (req, res) => {
                 message: 'This email is already used...'
             })
         }
-        else if(password != passwordConfirm){
+        if(!name || !email || !password || !passwordConfirm){
+            return res.render('register', {
+                message: 'Please fill all information...'
+            })
+        }
+        else if(password !== passwordConfirm){
             return res.render('register', {
                 message: 'Passwords do not match...'
             });
