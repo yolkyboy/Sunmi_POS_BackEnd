@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './.env'});
 
@@ -24,6 +25,8 @@ app.use(express.urlencoded({ extended: false}));
 //Parse JSON bodies (as sent by API clients)
 //Make sure values that come in are JSON 
 app.use(express.json());
+//Set up cookie in the browser
+app.use(cookieParser());
 
 
 app.set('view engine', 'hbs'); //Find folder 'views' by hbs default
